@@ -46,7 +46,7 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-
+#define FFT_N 512
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/

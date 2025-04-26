@@ -16,10 +16,11 @@
   ******************************************************************************
   */
 /* USER CODE END Header */
-
+//#define FFT_N 512
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_it.h"
+#include "stdbool.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -43,6 +44,9 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 int val_from_adc;
+int adc_val_array1[FFT_N];
+int adc_val_array2[FFT_N];
+bool inputtingarray2;
 uint32_t adc_arrayindex;
 /* USER CODE END PV */
 
@@ -209,6 +213,18 @@ void ADC_IRQHandler(void)
 {
   /* USER CODE BEGIN ADC_IRQn 0 */
   val_from_adc = HAL_ADC_GetValue(&hadc1);
+
+  if (inputtingarray2) {
+	adc_val_array2[adc_arrayindex] = val_from_adc;
+  } else {
+	adc_val_array1[adc_arrayindex] = val_from_adc;
+  }
+  adc_arrayindex++;
+
+  if (adc_arrayindex == FFT_N) {
+      inputtingarray2 = !inputtingarray2;
+      adc_arrayindex = 0;
+  }
 
   /* USER CODE END ADC_IRQn 0 */
   HAL_ADC_IRQHandler(&hadc1);

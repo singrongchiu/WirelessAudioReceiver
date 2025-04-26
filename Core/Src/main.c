@@ -18,6 +18,8 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stdbool.h"
+#include "arm_math.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -47,7 +49,12 @@ TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
 extern int val_from_adc;
+extern int adc_val_array2[FFT_N];
+extern int adc_val_array3[FFT_N];
+extern bool inputtingarray2;
 extern uint32_t adc_arrayindex;
+
+int fft_val_array[FFT_N];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
