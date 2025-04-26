@@ -54,7 +54,10 @@ extern float32_t adc_val_array1[FFT_N];
 extern float32_t adc_val_array2[FFT_N];
 extern bool inputtingarray2;
 extern uint32_t adc_arrayindex;
+extern bool timer3calcfft;
 
+bool message[MESSAGE_LENGTH];
+uint32_t messageindex;
 float fft_val_array[FFT_N];
 float fft_val_array_magnitude[FFT_N];
 /* USER CODE END PV */
@@ -123,14 +126,14 @@ int main(void)
   uint32_t ifftFlag = 0;
   uint32_t doBitReverse = 1;
 
-  uint32_t testIndex = 0;
-  float32_t maxValue;
+//  uint32_t testIndex = 0;
+//  float32_t maxValue;
 
 //  arm_status status = arm_cfft_radix4_init_f32 (&S, fftSize, ifftFlag, doBitReverse);
   arm_cfft_radix4_init_f32 (&S, fftSize, ifftFlag, doBitReverse);
+  messageindex = 0;
 
-
-  while(!inputtingarray2); // first time inputting into array 1
+  while(!inputtingarray2); // first time inputting into array 1 (not necessary)
 
   /* USER CODE END 2 */
 
@@ -139,16 +142,26 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
-    if (inputtingarray2) {
-      memcpy(fft_val_array, adc_val_array1, FFT_N * sizeof(adc_val_array1[0]));
-    } else {
-      memcpy(fft_val_array, adc_val_array2, FFT_N * sizeof(adc_val_array2[0]));
-    }
-    arm_cfft_radix4_f32 (&S, fft_val_array);                      // FFT/IFFT transform
-    arm_cmplx_mag_f32 (fft_val_array, fft_val_array_magnitude, fftSize);       // recalculate to Magn./Phase representation
-    arm_max_f32 (fft_val_array_magnitude, fftSize, &maxValue, &testIndex); // find maxValue and returns it's BIN value
+	if (timer3calcfft) {
+	  if (inputtingarray2) {
+		memcpy(fft_val_array, adc_val_array1, FFT_N * sizeof(adc_val_array1[0]));
+	  } else {
+		memcpy(fft_val_array, adc_val_array2, FFT_N * sizeof(adc_val_array2[0]));
+	  }
+	  arm_cfft_radix4_f32 (&S, fft_val_array);                      // FFT transform
+	  arm_cmplx_mag_f32 (fft_val_array, fft_val_array_magnitude, fftSize);       // recalculate to Magn./Phase representation
+//	  arm_max_f32 (fft_val_array_magnitude, fftSize, &maxValue, &testIndex); // find maxValue and returns it's index (bin) value
+	  timer3calcfft = 0;
+
+	  if (fft_val_array_magnitude[FREQ0INDEX] > RECEIVE0THRESHOLD) {
+        message[messageindex] = 0;
+        messageindex++;
+	  } else if (fft_val_array_magnitude[FREQ1INDEX] > RECEIVE1THRESHOLD) {
+		message[messageindex] = 1;
+		messageindex++;
+	  }
+	}
   }
   /* USER CODE END 3 */
 }

@@ -48,6 +48,8 @@ float32_t adc_val_array1[FFT_N];
 float32_t adc_val_array2[FFT_N];
 bool inputtingarray2;
 uint32_t adc_arrayindex;
+
+bool timer3calcfft;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -257,7 +259,7 @@ void TIM2_IRQHandler(void)
 void TIM3_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM3_IRQn 0 */
-
+  timer3calcfft = 1;
   /* USER CODE END TIM3_IRQn 0 */
   HAL_TIM_IRQHandler(&htim3);
   /* USER CODE BEGIN TIM3_IRQn 1 */

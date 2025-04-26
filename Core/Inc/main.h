@@ -47,6 +47,11 @@ extern "C" {
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 #define FFT_N 1024
+#define MESSAGE_LENGTH 64
+#define FREQ0INDEX 80 // for 80MHz, freq = 31250
+#define FREQ1INDEX 112 // for 80MHz, freq = 43750
+#define RECEIVE0THRESHOLD 50000000
+#define RECEIVE1THRESHOLD 50000000
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
