@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "stm32f4xx_it.h"
 #include "stdbool.h"
 #include "arm_math.h"
 
@@ -49,12 +50,12 @@ TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
 extern int val_from_adc;
-extern int adc_val_array2[FFT_N];
-extern int adc_val_array3[FFT_N];
+extern float adc_val_array1[FFT_N];
+extern float adc_val_array2[FFT_N];
 extern bool inputtingarray2;
 extern uint32_t adc_arrayindex;
 
-int fft_val_array[FFT_N];
+float fft_val_array[FFT_N];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -125,10 +126,11 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-	int a;
-	for (int i = 0; i < 5000; i++) {
-      a += i;
-	}
+    if (inputtingarray2) {
+      memcpy(fft_val_array, adc_val_array1, FFT_N * sizeof(adc_val_array1[0]));
+    } else {
+      memcpy(fft_val_array, adc_val_array2, FFT_N * sizeof(adc_val_array2[0]));
+    }
   }
   /* USER CODE END 3 */
 }
