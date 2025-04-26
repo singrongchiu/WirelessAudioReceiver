@@ -50,8 +50,8 @@ TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
 extern int val_from_adc;
-extern float adc_val_array1[FFT_N];
-extern float adc_val_array2[FFT_N];
+extern float32_t adc_val_array1[FFT_N];
+extern float32_t adc_val_array2[FFT_N];
 extern bool inputtingarray2;
 extern uint32_t adc_arrayindex;
 
@@ -116,6 +116,8 @@ int main(void)
 
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_Base_Start_IT(&htim3);
+//  arm_cfft_radix4_instance_f32  S;
+//  status = arm_cfft_radix4_init_f32 (&S, fftSize, ifftFlag, doBitReverse);
 
   /* USER CODE END 2 */
 
@@ -131,6 +133,9 @@ int main(void)
     } else {
       memcpy(fft_val_array, adc_val_array2, FFT_N * sizeof(adc_val_array2[0]));
     }
+//    arm_cfft_radix4_f32 (&S, fft_val_array);                      // FFT/IFFT transform
+//    arm_cmplx_mag_f32 (testInput, testOutput, fftSize);       // recalculate to Magn./Phase representation
+//    arm_max_f32 (testOutput, fftSize, &maxValue, &testIndex); // find maxValue and returns it's BIN value
   }
   /* USER CODE END 3 */
 }

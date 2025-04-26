@@ -22,6 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "arm_math.h"
 #include "stdbool.h"
 /* USER CODE END Includes */
 
@@ -43,8 +44,8 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 int val_from_adc;
-float adc_val_array1[FFT_N];
-float adc_val_array2[FFT_N];
+float32_t adc_val_array1[FFT_N];
+float32_t adc_val_array2[FFT_N];
 bool inputtingarray2;
 uint32_t adc_arrayindex;
 /* USER CODE END PV */
@@ -214,9 +215,9 @@ void ADC_IRQHandler(void)
   val_from_adc = HAL_ADC_GetValue(&hadc1);
 
   if (inputtingarray2) {
-	adc_val_array2[adc_arrayindex] = (float) val_from_adc;
+	adc_val_array2[adc_arrayindex] = (float32_t) val_from_adc;
   } else {
-	adc_val_array1[adc_arrayindex] = (float) val_from_adc;
+	adc_val_array1[adc_arrayindex] = (float32_t) val_from_adc;
   }
   adc_arrayindex++;
 
