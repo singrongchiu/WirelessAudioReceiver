@@ -171,10 +171,7 @@ int main(void)
 				((fft_val_array_magnitude[FREQ0INDEX2] > RECEIVE0THRESHOLD) ? 1:0) +
 				((fft_val_array_magnitude[FREQ0INDEX3] > RECEIVE0THRESHOLD) ? 1:0) +
 				((fft_val_array_magnitude[FREQ0INDEX4] > RECEIVE0THRESHOLD) ? 1:0);
-	    if (fft_val_array_magnitude[FREQ0INDEX1] > RECEIVE0THRESHOLD ||
-	    		fft_val_array_magnitude[FREQ0INDEX2] > RECEIVE0THRESHOLD ||
-				fft_val_array_magnitude[FREQ0INDEX3] > RECEIVE0THRESHOLD ||
-				fft_val_array_magnitude[FREQ0INDEX4] > RECEIVE0THRESHOLD) {
+	    if (bit0twotrue >= 2) {
 		  message[messageindex] = 0;
 		  messageindex++;
 	    } else if (fft_val_array_magnitude[FREQ1INDEX1] > RECEIVE1THRESHOLD ||

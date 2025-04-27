@@ -56,8 +56,8 @@ extern "C" {
 #define FREQ1INDEX2 153 //
 #define FREQ1INDEX3 154 //
 #define FREQ1INDEX4 307 //
-#define RECEIVE0THRESHOLD 1700
-#define RECEIVE1THRESHOLD 1700
+#define RECEIVE0THRESHOLD 1300
+#define RECEIVE1THRESHOLD 1300
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
