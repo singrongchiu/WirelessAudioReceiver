@@ -58,8 +58,8 @@ extern bool timer3calcfft;
 
 bool message[MESSAGE_LENGTH];
 uint32_t messageindex;
-float fft_val_array[FFT_N];
-float fft_val_array_magnitude[FFT_N];
+float32_t fft_val_array[2* FFT_N];
+float32_t fft_val_array_magnitude[FFT_N];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -121,8 +121,8 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_Base_Start_IT(&htim3);
 
-  arm_cfft_radix4_instance_f32  S;
-  uint32_t fftSize = FFT_N;
+  arm_cfft_instance_f32 S;
+//  uint32_t fftSize = FFT_N;
   uint32_t ifftFlag = 0;
   uint32_t doBitReverse = 1;
 
@@ -130,7 +130,7 @@ int main(void)
 //  float32_t maxValue;
 
 //  arm_status status = arm_cfft_radix4_init_f32 (&S, fftSize, ifftFlag, doBitReverse);
-  arm_cfft_radix4_init_f32 (&S, fftSize, ifftFlag, doBitReverse);
+  arm_cfft_init_f32(&S, FFT_N);
   messageindex = 0;
 
   while(!inputtingarray2); // first time inputting into array 1 (not necessary)
@@ -144,22 +144,35 @@ int main(void)
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
 	if (timer3calcfft) {
+//	  memset(fft_val_array, 0, FFT_N * sizeof(fft_val_array[0]));
 	  if (inputtingarray2) {
-		memcpy(fft_val_array, adc_val_array1, FFT_N * sizeof(adc_val_array1[0]));
+//		memcpy(fft_val_array, adc_val_array1, FFT_N * sizeof(adc_val_array1[0]));
+		for (int i = 0; i < FFT_N; i++) {
+          fft_val_array[2*i] = adc_val_array1[i];
+          fft_val_array[2*i + 1] = 0;
+		}
 	  } else {
-		memcpy(fft_val_array, adc_val_array2, FFT_N * sizeof(adc_val_array2[0]));
+//		memcpy(fft_val_array, adc_val_array2, FFT_N * sizeof(adc_val_array2[0]));
+	    for (int i = 0; i < FFT_N; i++) {
+		  fft_val_array[2*i] = adc_val_array2[i];
+          fft_val_array[2*i + 1] = 0;
+		}
 	  }
-	  arm_cfft_radix4_f32 (&S, fft_val_array);                      // FFT transform
-	  arm_cmplx_mag_f32 (fft_val_array, fft_val_array_magnitude, fftSize);       // recalculate to Magn./Phase representation
+	  arm_cfft_f32(&S, fft_val_array, ifftFlag, doBitReverse);
+	  arm_cmplx_mag_f32(fft_val_array, fft_val_array_magnitude, FFT_N);
+//	  arm_cfft_radix4_f32 (&S, fft_val_array);                      // FFT transform
+//	  arm_cmplx_mag_f32 (fft_val_array, fft_val_array_magnitude, fftSize);       // recalculate to Magn./Phase representation
 //	  arm_max_f32 (fft_val_array_magnitude, fftSize, &maxValue, &testIndex); // find maxValue and returns it's index (bin) value
 	  timer3calcfft = 0;
 
-	  if (fft_val_array_magnitude[FREQ0INDEX] > RECEIVE0THRESHOLD) {
-        message[messageindex] = 0;
-        messageindex++;
-	  } else if (fft_val_array_magnitude[FREQ1INDEX] > RECEIVE1THRESHOLD) {
-		message[messageindex] = 1;
-		messageindex++;
+	  if (messageindex <= MESSAGE_LENGTH) {
+	    if (fft_val_array_magnitude[FREQ0INDEX] > RECEIVE0THRESHOLD) {
+		  message[messageindex] = 0;
+		  messageindex++;
+	    } else if (fft_val_array_magnitude[FREQ1INDEX] > RECEIVE1THRESHOLD) {
+		  message[messageindex] = 1;
+		  messageindex++;
+	    }
 	  }
 	}
   }

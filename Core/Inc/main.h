@@ -48,10 +48,10 @@ extern "C" {
 /* USER CODE BEGIN EM */
 #define FFT_N 1024
 #define MESSAGE_LENGTH 64
-#define FREQ0INDEX 80 // for 80MHz, freq = 31250
-#define FREQ1INDEX 112 // for 80MHz, freq = 43750
-#define RECEIVE0THRESHOLD 50000000
-#define RECEIVE1THRESHOLD 50000000
+#define FREQ0INDEX 64 // for 400kHz sampling rate, freq = 25000
+#define FREQ1INDEX 128 // for 400kHz sampling rate, freq = 50000
+#define RECEIVE0THRESHOLD 915
+#define RECEIVE1THRESHOLD 950
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
