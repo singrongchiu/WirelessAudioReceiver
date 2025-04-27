@@ -56,7 +56,7 @@ extern bool inputtingarray2;
 extern uint32_t adc_arrayindex;
 extern bool timer3calcfft;
 
-bool message[MESSAGE_LENGTH];
+int message[MESSAGE_LENGTH];
 uint32_t messageindex;
 float32_t fft_val_array[2* FFT_N];
 float32_t fft_val_array_magnitude[FFT_N];
@@ -117,7 +117,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_ADC_Start_IT(&hadc1);
   HAL_TIM_Base_Start_IT(&htim2);
   HAL_TIM_Base_Start_IT(&htim3);
 
@@ -167,19 +167,22 @@ int main(void)
 	  timer3calcfft = 0;
 
 	  if (messageindex <= MESSAGE_LENGTH) {
-		int bit0twotrue = ((fft_val_array_magnitude[FREQ0INDEX1] > RECEIVE0THRESHOLD) ? 1:0) +
-				((fft_val_array_magnitude[FREQ0INDEX2] > RECEIVE0THRESHOLD) ? 1:0) +
-				((fft_val_array_magnitude[FREQ0INDEX3] > RECEIVE0THRESHOLD) ? 1:0) +
-				((fft_val_array_magnitude[FREQ0INDEX4] > RECEIVE0THRESHOLD) ? 1:0);
-	    if (bit0twotrue >= 2) {
+		int bit0twotrue = ((fft_val_array_magnitude[FREQ0INDEX2] > RECEIVE0THRESHOLDTWO) ? 1:0) +
+				((fft_val_array_magnitude[FREQ0INDEX3] > RECEIVE0THRESHOLDTWO) ? 1:0) +
+				((fft_val_array_magnitude[FREQ0INDEX4] > RECEIVE0THRESHOLDTWO) ? 1:0);
+		int bit1twotrue = (fft_val_array_magnitude[FREQ1INDEX1] > RECEIVE1THRESHOLD) ? 1:0 +
+	    		(fft_val_array_magnitude[FREQ1INDEX2] > RECEIVE1THRESHOLDTWO) ? 1:0 +
+				(fft_val_array_magnitude[FREQ1INDEX3] > RECEIVE1THRESHOLDTWO) ? 1:0 +
+				(fft_val_array_magnitude[FREQ1INDEX4] > RECEIVE1THRESHOLDTWO) ? 1:0;
+	    if ((fft_val_array_magnitude[FREQ0INDEX1] > RECEIVE0THRESHOLD) || bit0twotrue >= 2) {
 		  message[messageindex] = 0;
 		  messageindex++;
-	    } else if (fft_val_array_magnitude[FREQ1INDEX1] > RECEIVE1THRESHOLD ||
-	    		fft_val_array_magnitude[FREQ1INDEX2] > RECEIVE1THRESHOLD ||
-				fft_val_array_magnitude[FREQ1INDEX3] > RECEIVE1THRESHOLD ||
-				fft_val_array_magnitude[FREQ1INDEX4] > RECEIVE1THRESHOLD) {
+	    } else if ((fft_val_array_magnitude[FREQ1INDEX1] > RECEIVE0THRESHOLD) || bit1twotrue >= 2) {
 		  message[messageindex] = 1;
 		  messageindex++;
+	    } else {
+	      message[messageindex] = -1;
+	      messageindex++;
 	    }
 	  }
 	}
@@ -259,8 +262,8 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ScanConvMode = DISABLE;
   hadc1.Init.ContinuousConvMode = DISABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
-  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
+  hadc1.Init.ExternalTrigConv = ADC_EXTERNALTRIGCONV_T2_TRGO;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.NbrOfConversion = 1;
   hadc1.Init.DMAContinuousRequests = DISABLE;
@@ -319,11 +322,11 @@ static void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+//  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
+//  {
+//    Error_Handler();
+//  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_UPDATE;
   sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
   if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
   {

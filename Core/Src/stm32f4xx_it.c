@@ -242,13 +242,10 @@ void ADC_IRQHandler(void)
 void TIM2_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM2_IRQn 0 */
-//  val_from_adc = HAL_ADC_GetValue(&hadc1);
-  if(HAL_ADC_Start_IT(&hadc1) != HAL_OK)
-	  Error_Handler();
+
   /* USER CODE END TIM2_IRQn 0 */
   HAL_TIM_IRQHandler(&htim2);
   /* USER CODE BEGIN TIM2_IRQn 1 */
-//  HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
 
   /* USER CODE END TIM2_IRQn 1 */
 }

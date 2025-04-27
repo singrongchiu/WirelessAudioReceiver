@@ -47,17 +47,19 @@ extern "C" {
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
 #define FFT_N 1024
-#define MESSAGE_LENGTH 64
+#define MESSAGE_LENGTH 1024
 #define FREQ0INDEX1 64 // for 200kHz sampling rate, freq = 12500
 #define FREQ0INDEX2 128 // harmonics for square wave
 #define FREQ0INDEX3 192 //
 #define FREQ0INDEX4 256 //
-#define FREQ1INDEX1 152 // for 200kHz sampling rate, freq = 30000 (bin 153.6)
-#define FREQ1INDEX2 153 //
-#define FREQ1INDEX3 154 //
-#define FREQ1INDEX4 307 //
-#define RECEIVE0THRESHOLD 1300
+#define FREQ1INDEX1 160 // for 200kHz sampling rate, freq = 31250 (bin 153.6)
+#define FREQ1INDEX2 320 //
+#define FREQ1INDEX3 80 //
+#define FREQ1INDEX4 480 //
+#define RECEIVE0THRESHOLD 1500
+#define RECEIVE0THRESHOLDTWO 1200
 #define RECEIVE1THRESHOLD 1300
+#define RECEIVE1THRESHOLDTWO 1200
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/

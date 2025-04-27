@@ -1,6 +1,7 @@
 #MicroXplorer Configuration settings - do not modify
 ADC1.Channel-1\#ChannelRegularConversion=ADC_CHANNEL_5
-ADC1.IPParameters=Rank-1\#ChannelRegularConversion,master,Channel-1\#ChannelRegularConversion,SamplingTime-1\#ChannelRegularConversion,NbrOfConversionFlag
+ADC1.ExternalTrigConv=ADC_EXTERNALTRIGCONV_T2_TRGO
+ADC1.IPParameters=Rank-1\#ChannelRegularConversion,master,Channel-1\#ChannelRegularConversion,SamplingTime-1\#ChannelRegularConversion,NbrOfConversionFlag,ExternalTrigConv
 ADC1.NbrOfConversionFlag=1
 ADC1.Rank-1\#ChannelRegularConversion=1
 ADC1.SamplingTime-1\#ChannelRegularConversion=ADC_SAMPLETIME_3CYCLES
@@ -113,8 +114,10 @@ RCC.VcooutputI2S=96000000
 SH.ADCx_IN5.0=ADC1_IN5,IN5
 SH.ADCx_IN5.ConfNb=1
 TIM2.Channel-PWM\ Generation1\ No\ Output=TIM_CHANNEL_1
-TIM2.IPParameters=Channel-PWM Generation1 No Output,Period
+TIM2.IPParameters=Channel-PWM Generation1 No Output,Period,TIM_MasterSlaveMode,TIM_MasterOutputTrigger
 TIM2.Period=400
+TIM2.TIM_MasterOutputTrigger=TIM_TRGO_UPDATE
+TIM2.TIM_MasterSlaveMode=TIM_MASTERSLAVEMODE_DISABLE
 TIM3.ClockDivision=TIM_CLOCKDIVISION_DIV4
 TIM3.IPParameters=Period,ClockDivision,Prescaler
 TIM3.Period=40960
