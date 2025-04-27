@@ -142,6 +142,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
 	if (timer3calcfft) {
 //	  memset(fft_val_array, 0, FFT_N * sizeof(fft_val_array[0]));
@@ -166,10 +167,20 @@ int main(void)
 	  timer3calcfft = 0;
 
 	  if (messageindex <= MESSAGE_LENGTH) {
-	    if (fft_val_array_magnitude[FREQ0INDEX] > RECEIVE0THRESHOLD) {
+		int bit0twotrue = ((fft_val_array_magnitude[FREQ0INDEX1] > RECEIVE0THRESHOLD) ? 1:0) +
+				((fft_val_array_magnitude[FREQ0INDEX2] > RECEIVE0THRESHOLD) ? 1:0) +
+				((fft_val_array_magnitude[FREQ0INDEX3] > RECEIVE0THRESHOLD) ? 1:0) +
+				((fft_val_array_magnitude[FREQ0INDEX4] > RECEIVE0THRESHOLD) ? 1:0);
+	    if (fft_val_array_magnitude[FREQ0INDEX1] > RECEIVE0THRESHOLD ||
+	    		fft_val_array_magnitude[FREQ0INDEX2] > RECEIVE0THRESHOLD ||
+				fft_val_array_magnitude[FREQ0INDEX3] > RECEIVE0THRESHOLD ||
+				fft_val_array_magnitude[FREQ0INDEX4] > RECEIVE0THRESHOLD) {
 		  message[messageindex] = 0;
 		  messageindex++;
-	    } else if (fft_val_array_magnitude[FREQ1INDEX] > RECEIVE1THRESHOLD) {
+	    } else if (fft_val_array_magnitude[FREQ1INDEX1] > RECEIVE1THRESHOLD ||
+	    		fft_val_array_magnitude[FREQ1INDEX2] > RECEIVE1THRESHOLD ||
+				fft_val_array_magnitude[FREQ1INDEX3] > RECEIVE1THRESHOLD ||
+				fft_val_array_magnitude[FREQ1INDEX4] > RECEIVE1THRESHOLD) {
 		  message[messageindex] = 1;
 		  messageindex++;
 	    }
@@ -355,10 +366,10 @@ static void MX_TIM3_Init(void)
 
   /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
-  htim3.Init.Prescaler = 0;
+  htim3.Init.Prescaler = 7;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim3.Init.Period = 40960;
-  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV4;
   htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
   {
@@ -376,7 +387,7 @@ static void MX_TIM3_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN TIM3_Init 2 */
-  HAL_NVIC_SetPriority(TIM3_IRQn, 0, 1);
+  HAL_NVIC_SetPriority(TIM3_IRQn, 1, 1);
   HAL_NVIC_EnableIRQ(TIM3_IRQn);
   /* USER CODE END TIM3_Init 2 */
 

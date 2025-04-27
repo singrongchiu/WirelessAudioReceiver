@@ -48,10 +48,16 @@ extern "C" {
 /* USER CODE BEGIN EM */
 #define FFT_N 1024
 #define MESSAGE_LENGTH 64
-#define FREQ0INDEX 64 // for 400kHz sampling rate, freq = 25000
-#define FREQ1INDEX 128 // for 400kHz sampling rate, freq = 50000
-#define RECEIVE0THRESHOLD 915
-#define RECEIVE1THRESHOLD 950
+#define FREQ0INDEX1 64 // for 200kHz sampling rate, freq = 12500
+#define FREQ0INDEX2 128 // harmonics for square wave
+#define FREQ0INDEX3 192 //
+#define FREQ0INDEX4 256 //
+#define FREQ1INDEX1 152 // for 200kHz sampling rate, freq = 30000 (bin 153.6)
+#define FREQ1INDEX2 153 //
+#define FREQ1INDEX3 154 //
+#define FREQ1INDEX4 307 //
+#define RECEIVE0THRESHOLD 1700
+#define RECEIVE1THRESHOLD 1700
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
