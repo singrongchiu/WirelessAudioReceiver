@@ -55,11 +55,12 @@ extern "C" {
 #define FREQ1INDEX1 160 // for 200kHz sampling rate, freq = 31250 (bin 153.6)
 #define FREQ1INDEX2 320 //
 #define FREQ1INDEX3 80 //
-#define FREQ1INDEX4 480 //
+#define FREQ1INDEX4 161 //
+#define FREQ1INDEX5 159 //
 #define RECEIVE0THRESHOLD 1500
 #define RECEIVE0THRESHOLDTWO 1200
-#define RECEIVE1THRESHOLD 1300
-#define RECEIVE1THRESHOLDTWO 1200
+#define RECEIVE1THRESHOLD 1100
+#define RECEIVE1THRESHOLDTWO 1000
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
